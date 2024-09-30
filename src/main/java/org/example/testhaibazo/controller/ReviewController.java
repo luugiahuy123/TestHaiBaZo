@@ -9,7 +9,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/reviews")
+@CrossOrigin("*")
+@RequestMapping("/reviews")
 public class ReviewController {
 
     @Autowired
@@ -28,19 +29,19 @@ public class ReviewController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<ReviewDTO> createReview(@RequestBody ReviewDTO reviewDto) {
         ReviewDTO createdReview = reviewService.createReview(reviewDto);
         return ResponseEntity.status(201).body(createdReview);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/update/{id}")
     public ResponseEntity<ReviewDTO> updateReview(@PathVariable Long id, @RequestBody ReviewDTO reviewDto) {
         ReviewDTO updatedReview = reviewService.updateReview(id, reviewDto);
         return updatedReview != null ? ResponseEntity.ok(updatedReview) : ResponseEntity.notFound().build();
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deleteReview(@PathVariable Long id) {
         reviewService.deleteReview(id);
         return ResponseEntity.noContent().build();

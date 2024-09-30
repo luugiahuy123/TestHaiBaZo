@@ -9,7 +9,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/orders")
+@CrossOrigin("*")
+@RequestMapping("/orders")
 public class OrderController {
 
     @Autowired
@@ -28,19 +29,19 @@ public class OrderController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<OrderDTO> createOrder(@RequestBody OrderDTO orderDto) {
         OrderDTO createdOrder = orderService.createOrder(orderDto);
         return ResponseEntity.status(201).body(createdOrder);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/update/{id}")
     public ResponseEntity<OrderDTO> updateOrder(@PathVariable Long id, @RequestBody OrderDTO orderDto) {
         OrderDTO updatedOrder = orderService.updateOrder(id, orderDto);
         return updatedOrder != null ? ResponseEntity.ok(updatedOrder) : ResponseEntity.notFound().build();
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deleteOrder(@PathVariable Long id) {
         orderService.deleteOrder(id);
         return ResponseEntity.noContent().build();
